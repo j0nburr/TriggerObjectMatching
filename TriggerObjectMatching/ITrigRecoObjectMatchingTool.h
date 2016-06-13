@@ -4,19 +4,17 @@
 #include "AsgTools/IAsgTool.h"
 
 #include "xAODBase/IParticle.h"
+#include "xAODBase/IParticleContainer.h"
+#include <vector>
 
 class ITrigRecoObjectMatchingTool : public virtual asg::IAsgTool {
-   public:
-      ASG_TOOL_INTERFACE( ITrigRecoObjectMatchingTool ) //declares the interface to athena
-
-      //below is an example method, delete as necessary
-      //this is where you specify default values for additional arguments
-      virtual bool isSelected(const xAOD::IParticle& particle, bool someAdditionalArgument = false) const = 0;
-
-      //declare enums for properties here too, so that they are accessible through just the interface header
-      //example of an enum you might end up using for your properties .. please put enums in a class! (not just a namespace)
-      enum MyEnumProperty { Val1=1 , Val2=2 };
-
+  public:
+    ASG_TOOL_INTERFACE( ITrigRecoObjectMatchingTool ) //declares the interface to athena
+    // Match trigger objects to a provided set of reco objects. If maxDR is not negative then any returned match with a DR > maxDR
+    // will not be used (a null link will be set instead). If maxDR is negative the tool's internal value will be used.
+    //
+    // The trigObjects will be decorated with an element link to the matched object (if linked)
+    virtual StatusCode matchObjects(const std::vector<const xAOD::IParticle*>& recoObjects, const xAOD::IParticleContainer* trigObjects, float maxDR = -1.) const = 0;
 };
 
 #endif //> !TRIGGEROBJECTMATCHING_ITRIGRECOOBJECTMATCHINGTOOL_H

@@ -15,10 +15,17 @@ use AsgTools AsgTools-* Control/AthToolSupport
 
 #next line only needed for example code in asg tool...please remove if not using
 use xAODBase xAODBase-* Event/xAOD
+use TriggerMatchingTool TriggerMatchingTool-* Trigger/TrigAnalysis
 
 
 ## put here your package dependencies...
 
+private
+
+use AtlasBoost AtlasBoost-* External
+use FourMomUtils FourMomUtils-* Event
+use AthLinks AthLinks-* Control
+end_private
 ##
 
 branches src src/components doc python share
@@ -31,7 +38,7 @@ apply_pattern declare_python_modules files="*.py"
 
 
 
-library TriggerObjectMatching *.cxx components/*.cxx
+library TriggerObjectMatching *.cxx ../Root/*.cxx components/*.cxx
 apply_pattern component_library
 #Reflex Dictionary Generation:
 private

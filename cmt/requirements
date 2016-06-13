@@ -8,6 +8,15 @@ use AtlasPolicy 	AtlasPolicy-*
 ## for gaudi tools, services and objects
 use GaudiInterface 	GaudiInterface-* 	External
 
+use AsgTools AsgTools-* Control/AthToolSupport
+
+#uncomment the next line to use ROOT libraries in your package
+#use AtlasROOT AtlasROOT-* External
+
+#next line only needed for example code in asg tool...please remove if not using
+use xAODBase xAODBase-* Event/xAOD
+
+
 ## put here your package dependencies...
 
 ##
@@ -22,3 +31,16 @@ apply_pattern declare_python_modules files="*.py"
 
 
 
+library TriggerObjectMatching *.cxx components/*.cxx
+apply_pattern component_library
+#Reflex Dictionary Generation:
+private
+use AtlasReflex AtlasReflex-* External
+apply_pattern lcgdict dict=TriggerObjectMatching selectionfile=selection.xml headerfiles="../TriggerObjectMatching/TriggerObjectMatchingDict.h"
+end_private
+#test for TrigRecoObjectMatchingTool ... compile and execute it with 'make check' 
+private
+use TestTools      TestTools-*         AtlasTest
+apply_pattern UnitTest_run unit_test=ut_TrigRecoObjectMatchingTool
+macro_append ut_TrigRecoObjectMatchingTool_test_dependencies " TriggerObjectMatching TriggerObjectMatchingMergeComponentsList "
+end_private
